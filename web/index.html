@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Password Strength Checker</title>
+  <meta name="description" content="Check how strong a password is. Entropy and pattern analysis run entirely in your browser — nothing is sent anywhere.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="no-referrer">
+  <link rel="stylesheet" href="css/styles.css">
+  <!--
+    Swap no-js -> js before first paint so JS-only controls (the show/hide
+    toggle) never flash on screen for users whose scripts are blocked.
+  -->
+  <script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the password field</a>
+
+  <main id="main">
+    <header class="page-header">
+      <h1>Password strength checker</h1>
+      <p class="lede">
+        Scored in your browser as you type. Nothing you enter is sent over the
+        network, saved, or written to the page history.
+      </p>
+    </header>
+
+    <section class="card" aria-labelledby="checker-heading">
+      <h2 id="checker-heading" class="visually-hidden">Check a password</h2>
+
+      <div class="field">
+        <label class="field-label" for="password">Password</label>
+        <div class="input-wrap">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            class="input"
+            required
+            aria-required="true"
+            aria-describedby="strength-summary"
+            autocomplete="new-password"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            maxlength="256"
+            placeholder="Type or paste a password">
+          <button type="button" id="toggle" class="toggle" aria-pressed="false" aria-controls="password">
+            <span class="toggle-text">Show</span>
+            <span class="visually-hidden"> password</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- data-score drives every colour in the meter block; JS sets it 0-4. -->
+      <div class="meter-block" id="meter-block" data-score="empty">
+        <div class="meter-head">
+          <span class="meter-label" id="strength-label">No password yet</span>
+          <span class="meter-time" id="crack-time"></span>
+        </div>
+        <div
+          class="meter-track"
+          id="meter"
+          role="progressbar"
+          aria-labelledby="strength-label"
+          aria-valuemin="0"
+          aria-valuemax="4"
+          aria-valuenow="0"
+          aria-valuetext="No password entered">
+          <div class="meter-fill" id="meter-fill"></div>
+        </div>
+        <!--
+          Single polite live region. Updates are debounced in app.js so a
+          screen reader is not interrupted on every keystroke.
+        -->
+        <p class="meter-summary" id="strength-summary" role="status" aria-live="polite">
+          Enter a password to see how strong it is.
+        </p>
+      </div>
+
+      <h3 class="section-heading" id="checklist-heading">Requirements</h3>
+      <ul class="checklist" id="checklist" aria-labelledby="checklist-heading">
+        <!--
+          Rendered by app.js from the same requirement list the Python package
+          returns, so the browser and the backend can never disagree about what
+          the rules are. Without JS the static fallback below is shown instead.
+        -->
+      </ul>
+
+      <noscript>
+        <ul class="checklist">
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> At least 8 characters</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> 12 or more characters</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> Contains a lowercase letter</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> Contains an uppercase letter</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> Contains a number</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> Contains a special character</li>
+          <li class="check is-unmet"><span class="check-mark" aria-hidden="true">•</span> No common words or predictable patterns</li>
+        </ul>
+        <p class="noscript-note">
+          Live scoring needs JavaScript. With scripts blocked, the rules above
+          still apply — or run <code>python3 checker.py</code> from this
+          project to check a password offline.
+        </p>
+      </noscript>
+
+      <!-- Fixed minimum height so appearing advice cannot shift the layout. -->
+      <div class="advice" id="advice" hidden>
+        <h3 class="section-heading">What to fix</h3>
+        <ul class="advice-list" id="advice-list"></ul>
+      </div>
+
+      <details class="details" id="details" hidden>
+        <summary class="details-summary">Why this score?</summary>
+        <div class="details-body">
+          <dl class="stats" id="stats"></dl>
+          <p class="details-note" id="penalty-intro" hidden>
+            Entropy removed because these parts are predictable to an attacker:
+          </p>
+          <ul class="penalty-list" id="penalty-list"></ul>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <p>
+        The score is an estimate from entropy and pattern matching, not a
+        guarantee. A browser check is a convenience for the person typing —
+        it can always be bypassed, so the identical check has to run on the
+        server too. That is what the Python package in this project is for.
+      </p>
+    </footer>
+  </main>
+
+  <script src="js/common-passwords.js"></script>
+  <script src="js/strength.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

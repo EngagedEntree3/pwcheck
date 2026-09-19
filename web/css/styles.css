@@ -1,0 +1,401 @@
+/*
+  Password strength checker — styles.
+
+  Palette decisions are measured, not eyeballed. Every pair below was computed
+  before it was used; the ratios are recorded next to each token.
+
+  Type: one family (the system UI stack) throughout. Hierarchy comes from
+  weight, size and space. Numeric readouts use tabular figures so the entropy
+  and crack-time values do not jitter as they change on each keystroke.
+
+  Colour: the strength meter is the only saturated colour on the page. Its
+  colour is semantic state, not decoration — and it is never the *only* carrier
+  of that state: the band name ("Fair") and the checklist say the same thing in
+  text.
+*/
+
+/* ------------------------------------------------------------------ tokens */
+
+:root {
+  color-scheme: light dark;
+
+  --paper: #F7F6F2;
+  --card: #FFFFFF;
+  --ink: #141414;          /* 18.42:1 on card, 17.04:1 on paper */
+  --muted: #6E6E68;        /* 5.13:1 on card, 4.74:1 on paper  */
+  --hairline: #E4E2DB;     /* decorative dividers only          */
+  --border: #767570;       /* 4.62:1 on card — input boundary   */
+  --track: #EDEBE4;
+  --track-border: #8E8C84; /* 3.37:1 on card — meter boundary   */
+  --focus: #1A56DB;        /* 6.18:1 on card                    */
+  --shadow: 0 1px 2px rgb(20 20 20 / 6%), 0 8px 24px rgb(20 20 20 / 6%);
+
+  /* Strength bands. Each doubles as fill and label colour:
+     all are >=4.5:1 on the card and >=4:1 on the meter track. */
+  --band-0: #C0271C;  /* 5.92:1 card, 4.96:1 track */
+  --band-1: #A85400;  /* 5.34:1 card, 4.48:1 track */
+  --band-2: #7F6300;  /* 5.70:1 card, 4.77:1 track */
+  --band-3: #1E7A3C;  /* 5.38:1 card, 4.51:1 track */
+  --band-4: #0E7F72;  /* 4.89:1 card, 4.10:1 track */
+
+  --band: var(--muted);
+  --measure: 44rem;
+  --radius: 14px;
+  --speed: 200ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141414;
+    --card: #1D1D1B;
+    --ink: #F2F1EC;          /* 14.93:1 on card */
+    --muted: #A7A59C;        /* 6.84:1 on card  */
+    --hairline: #33332F;
+    --border: #7A786F;       /* 3.81:1 on card  */
+    --track: #2A2A27;
+    --track-border: #7A786F; /* 3.81:1 on card  */
+    --focus: #8AB4FF;        /* 8.08:1 on card  */
+    --shadow: none;
+
+    --band-0: #FF6B5E;  /* 7.40:1 card, 5.15:1 track */
+    --band-1: #FF9F45;  /* 9.92:1 card, 7.06:1 track */
+    --band-2: #E8C35A;  /* 10.45:1 card, 8.49:1 track */
+    --band-3: #5FCB7C;  /* 9.58:1 card, 7.07:1 track */
+    --band-4: #3FD1B8;  /* 9.86:1 card, 7.56:1 track */
+  }
+}
+
+/* ------------------------------------------------------------------- reset */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: clamp(1.5rem, 5vw, 4rem) 1.25rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  /* Long unbroken passwords must wrap rather than widen the page. */
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.25; text-wrap: balance; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* ----------------------------------------------------------- accessibility */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: top var(--speed) ease;
+}
+.skip-link:focus { top: 1rem; }
+
+/* One focus treatment, applied everywhere. Never removed without a
+   replacement — keyboard users have no other way to see where they are. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* -------------------------------------------------------------- page frame */
+
+#main {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.page-header { margin-bottom: 1.75rem; }
+
+.page-header h1 {
+  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.25rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  margin: 0.6rem 0 0;
+  max-width: 38ch;
+  color: var(--muted);
+}
+
+.card {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.page-footer {
+  margin-top: 1.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.page-footer p { margin: 0; max-width: 62ch; }
+
+/* ------------------------------------------------------------------- field */
+
+.field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.input-wrap { display: flex; gap: 0.5rem; align-items: stretch; }
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;                 /* lets the flex item shrink below 390px */
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.0625rem;         /* >=16px: stops iOS Safari zooming on focus */
+  letter-spacing: 0.01em;
+}
+.input::placeholder { color: var(--muted); opacity: 1; }
+
+/* The toggle does nothing without JavaScript, so it only exists with it. */
+.toggle { display: none; }
+
+.js .toggle {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--speed) ease;
+}
+.js .toggle:hover { background: var(--track); }
+.toggle-text { min-width: 3.1ch; text-align: center; }
+
+/* ------------------------------------------------------------------- meter */
+
+.meter-block { margin-top: 1.5rem; }
+
+/* Every band colour resolves through one variable, so the fill, the label and
+   the crack-time line can never drift out of sync. */
+.meter-block[data-score="0"] { --band: var(--band-0); }
+.meter-block[data-score="1"] { --band: var(--band-1); }
+.meter-block[data-score="2"] { --band: var(--band-2); }
+.meter-block[data-score="3"] { --band: var(--band-3); }
+.meter-block[data-score="4"] { --band: var(--band-4); }
+.meter-block[data-score="empty"] { --band: var(--muted); }
+
+.meter-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.meter-label {
+  font-size: 1.0625rem;
+  font-weight: 650;
+  color: var(--band);
+}
+
+.meter-time {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.meter-track {
+  position: relative;
+  height: 10px;
+  border: 1px solid var(--track-border);
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  /* Longhand so the transitioned property and the declared property are the
+     same one — nothing here relies on shorthand expansion. */
+  background-color: var(--band);
+  transition: width var(--speed) ease, background-color var(--speed) ease;
+}
+
+.meter-summary {
+  margin: 0.6rem 0 0;
+  min-height: 1.5rem;          /* reserved: live text cannot shift the page */
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------- checklist */
+
+.section-heading {
+  margin: 1.75rem 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.checklist {
+  display: grid;
+  gap: 0.4rem 1.25rem;
+}
+
+@media (min-width: 40rem) {
+  .checklist { grid-template-columns: 1fr 1fr; }
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+  font-size: 0.9375rem;
+}
+
+.check-mark {
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.check.is-met { color: var(--ink); }
+.check.is-met .check-mark { color: var(--band-3); }
+
+.check.is-unmet { color: var(--muted); }
+.check.is-unmet .check-mark { color: var(--muted); }
+
+/* ------------------------------------------------------------------ advice */
+
+.advice-list, .penalty-list {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9375rem;
+}
+
+.advice-list li, .penalty-list li {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: 0.5rem;
+}
+
+.advice-list li::before {
+  content: "→";
+  color: var(--band);
+  font-weight: 700;
+}
+
+.penalty-list li::before {
+  content: "−";
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------------------- details */
+
+.details {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.details-summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.details-summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+.details-body { margin-top: 1rem; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.9rem;
+  margin: 0 0 1rem;
+}
+.stats div { margin: 0; }
+.stats dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stats dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.0625rem;
+  font-weight: 650;
+}
+
+.details-note {
+  margin: 0 0 0.6rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.noscript-note {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.noscript-note code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--track);
+  font-size: 0.9em;
+}
+
+/* ------------------------------------------------------------------ motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

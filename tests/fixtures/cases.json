@@ -1,0 +1,215 @@
+{
+  "_comment": "Shared parity fixture. Both python/tests/test_core.py and tests/js/test_strength.js assert these exact values, so the two implementations cannot drift apart. Regenerate with tools/gen_fixture.py after an intentional model change.",
+  "cases": [
+    {
+      "password": "",
+      "note": "empty input",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 0.0,
+      "length": 0,
+      "crackTimeDisplay": "instantly",
+      "requirementsMet": 1
+    },
+    {
+      "password": "a",
+      "note": "single character",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 4.7,
+      "length": 1,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 2
+    },
+    {
+      "password": "aB3$xY9",
+      "note": "7 chars, all classes, but under the minimum length",
+      "score": 1,
+      "label": "Weak",
+      "entropyBits": 45.99,
+      "length": 7,
+      "crackTimeDisplay": "58 minutes",
+      "requirementsMet": 5
+    },
+    {
+      "password": "password",
+      "note": "the canonical weak password",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 11.35,
+      "length": 8,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 2
+    },
+    {
+      "password": "P@ssw0rd",
+      "note": "leetspeak does not save a dictionary word",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 11.36,
+      "length": 8,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 5
+    },
+    {
+      "password": "Password123!",
+      "note": "all four classes, still trivially guessable",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 26.07,
+      "length": 12,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 6
+    },
+    {
+      "password": "12345678",
+      "note": "pure ascending digit sequence",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 11.36,
+      "length": 8,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 2
+    },
+    {
+      "password": "qwerty",
+      "note": "keyboard walk",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 11.35,
+      "length": 6,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 1
+    },
+    {
+      "password": "qwertyuiop",
+      "note": "long keyboard walk",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 11.35,
+      "length": 10,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 2
+    },
+    {
+      "password": "aaaaaaaaaaaa",
+      "note": "single repeated character",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 8.29,
+      "length": 12,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 3
+    },
+    {
+      "password": "abcabcabcabc",
+      "note": "one short block repeated",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 12.0,
+      "length": 12,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 3
+    },
+    {
+      "password": "letmein!",
+      "note": "dictionary word with a symbol suffix",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 17.24,
+      "length": 8,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 3
+    },
+    {
+      "password": "Summer2024!",
+      "note": "seasonal word plus a year, a very common corporate shape",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 25.57,
+      "length": 11,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 5
+    },
+    {
+      "password": "hunter2",
+      "note": "short dictionary word plus a digit",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 16.53,
+      "length": 7,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 2
+    },
+    {
+      "password": "Tr0ub4dor&3",
+      "note": "the xkcd mangled word",
+      "score": 3,
+      "label": "Strong",
+      "entropyBits": 72.27,
+      "length": 11,
+      "crackTimeDisplay": "90 centuries",
+      "requirementsMet": 6
+    },
+    {
+      "password": "correct horse battery staple",
+      "note": "the xkcd passphrase",
+      "score": 4,
+      "label": "Excellent",
+      "entropyBits": 133.14,
+      "length": 28,
+      "crackTimeDisplay": "1.9e+20 centuries",
+      "requirementsMet": 5
+    },
+    {
+      "password": "xK9#mQ2!vL4$",
+      "note": "12 random characters, all classes",
+      "score": 3,
+      "label": "Strong",
+      "entropyBits": 78.84,
+      "length": 12,
+      "crackTimeDisplay": "8561 centuries",
+      "requirementsMet": 7
+    },
+    {
+      "password": "J8#vR!q2Lm$Ze4Wn",
+      "note": "16 random characters, all classes",
+      "score": 4,
+      "label": "Excellent",
+      "entropyBits": 105.12,
+      "length": 16,
+      "crackTimeDisplay": "6.97e+11 centuries",
+      "requirementsMet": 7
+    },
+    {
+      "password": "  spaces  in here 42",
+      "note": "spaces count toward the pool",
+      "score": 4,
+      "label": "Excellent",
+      "entropyBits": 104.19,
+      "length": 20,
+      "crackTimeDisplay": "3.66e+11 centuries",
+      "requirementsMet": 6
+    },
+    {
+      "password": "passenger-lentil-dial",
+      "note": "hyphenated passphrase",
+      "score": 4,
+      "label": "Excellent",
+      "entropyBits": 111.37,
+      "length": 21,
+      "crackTimeDisplay": "5.3e+13 centuries",
+      "requirementsMet": 4
+    },
+    {
+      "password": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      "note": "over the analysis cap",
+      "score": 0,
+      "label": "Very weak",
+      "entropyBits": 12.0,
+      "length": 300,
+      "crackTimeDisplay": "less than a second",
+      "requirementsMet": 3
+    }
+  ]
+}
