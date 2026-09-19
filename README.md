@@ -34,12 +34,20 @@ $ python3 python/checker.py
 | `tests/fixtures/cases.json` | The cross-language contract. Both suites assert it. |
 | `tools/` | Regenerate the JS wordlist and the fixture. |
 
+## Live demo
+
+**https://engagedentree3.github.io/pwcheck/**
+
+Published from `web/` by `.github/workflows/pages.yml` on every push to `main`.
+The deploy is gated on the test suites, so a broken scorer never reaches the
+published page.
+
 ## Quick start
 
 ### The web UI
 
-Open `web/index.html` in a browser. There is no build step and no server
-required — it runs from `file://`.
+Use the live demo above, or open `web/index.html` in a browser. There is no
+build step and no server required — it runs from `file://`.
 
 ### The CLI
 
